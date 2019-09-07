@@ -53,7 +53,7 @@ public class PlaylistEntityModel {
 //    @Column(name = "totalLength", columnDefinition = "float default 0.0")
 //    private float totalLength;
 
-    @ManyToMany(cascade = {
+    @ManyToMany(cascade = { // a playlist can have more than one song and a song may appear in more than 1 playlist
             CascadeType.PERSIST,
             CascadeType.MERGE
     })

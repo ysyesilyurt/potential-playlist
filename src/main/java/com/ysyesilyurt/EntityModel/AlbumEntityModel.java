@@ -40,13 +40,13 @@ public class AlbumEntityModel {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
-    @OneToMany(cascade = CascadeType.ALL,
+    @OneToMany(cascade = CascadeType.ALL, // an album may have more than one song
             fetch = FetchType.LAZY,
             mappedBy = "album")
     @OrderBy("created_at DESC")
     private Set<SongEntityModel> songs;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false) // more than one album may belong to one artist
     @JoinColumn(name = "artist_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private ArtistEntityModel artist;

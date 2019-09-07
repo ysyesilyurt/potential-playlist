@@ -33,7 +33,7 @@ public class ArtistEntityModel {
 //    @Column(name = "songCount", columnDefinition = "integer default 0")
 //    private int songCount;
 
-    @OneToMany(cascade = CascadeType.ALL,
+    @OneToMany(cascade = CascadeType.ALL, // an album can at most have 1 artist
             fetch = FetchType.LAZY,
             mappedBy = "artist")
     @OrderBy("created_at DESC")

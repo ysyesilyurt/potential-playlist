@@ -45,11 +45,11 @@ public class SongEntityModel {
     @Column(name = "length", columnDefinition = "float default 0.0")
     private float length;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false) // a song can have one album
     @JoinColumn(name = "album_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private AlbumEntityModel album;
 
-    @ManyToMany(mappedBy = "song")
-    private PlaylistEntityModel playlist;
+    @ManyToMany(mappedBy = "song") // a song may appear in more than one playlists
+    private PlaylistEntityModel playlists;
 }
