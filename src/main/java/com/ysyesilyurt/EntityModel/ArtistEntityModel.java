@@ -8,7 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -22,20 +22,18 @@ public class ArtistEntityModel {
     private long id;
 
     @NotNull
-    @Column(name = "fullname")
+    @Column(name = "fullName")
     private String fullName;
 
-//    @NotNull
-//    @Column(name = "albumCount", columnDefinition = "integer default 0")
-//    private int albumCount;
-//
-//    @NotNull
-//    @Column(name = "songCount", columnDefinition = "integer default 0")
-//    private int songCount;
+    @Override
+    public String toString() {
+        return String.format("ArtistEntityModel with id %d and fullname %s", id, fullName);
+    }
 
+    // artist may not have an album
     @OneToMany(cascade = CascadeType.ALL, // an album can at most have 1 artist
             fetch = FetchType.LAZY,
             mappedBy = "artist")
     @OrderBy("created_at DESC")
-    private Set<AlbumEntityModel> albums;
+    private List<AlbumEntityModel> albums;
 }

@@ -12,6 +12,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Getter
 @Setter
@@ -45,11 +46,19 @@ public class SongEntityModel {
     @Column(name = "length", columnDefinition = "float default 0.0")
     private float length;
 
+    @Override
+    public String toString() {
+        return String.format("SongEntityModel with id %d and title %s", id, title);
+    }
+
+    @NotNull // A song can not exist without an album
     @ManyToOne(fetch = FetchType.LAZY, optional = false) // a song can have one album
     @JoinColumn(name = "album_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private AlbumEntityModel album;
 
+    // Song may not belong to any playlist
     @ManyToMany(mappedBy = "song") // a song may appear in more than one playlists
-    private PlaylistEntityModel playlists;
+    @OrderBy("created_at DESC")
+    private List<PlaylistEntityModel> playlists;
 }

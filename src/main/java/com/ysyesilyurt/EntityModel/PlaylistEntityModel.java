@@ -11,7 +11,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -41,18 +41,17 @@ public class PlaylistEntityModel {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "category")
     private PlaylistCategory category;
 
-//    @NotNull
-//    @Column(name = "songCount", columnDefinition = "integer default 0")
-//    private int songCount;
-//
-//    @NotNull
-//    @Column(name = "totalLength", columnDefinition = "float default 0.0")
-//    private float totalLength;
+    @Override
+    public String toString() {
+        return String.format("PlaylistEntityModel with id %d and title %s", id, title);
+    }
 
+    @NotNull // A playlist can not exist without a song (namely, a playlist needs at least 1 song to exist)
     @ManyToMany(cascade = { // a playlist can have more than one song and a song may appear in more than 1 playlist
             CascadeType.PERSIST,
             CascadeType.MERGE
@@ -69,5 +68,5 @@ public class PlaylistEntityModel {
         inverseJoinColumns: Assign the column of third table related to associated entity.
      */
     @OrderBy("created_at DESC")
-    private Set<SongEntityModel> songs;
+    private List<SongEntityModel> songs;
 }

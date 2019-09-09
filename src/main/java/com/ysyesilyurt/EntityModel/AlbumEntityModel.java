@@ -10,7 +10,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -40,12 +40,18 @@ public class AlbumEntityModel {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
+    @Override
+    public String toString() {
+        return String.format("AlbumEntityModel with id %d and title %s", id, title);
+    }
+
     @OneToMany(cascade = CascadeType.ALL, // an album may have more than one song
             fetch = FetchType.LAZY,
             mappedBy = "album")
     @OrderBy("created_at DESC")
-    private Set<SongEntityModel> songs;
+    private List<SongEntityModel> songs;
 
+    @NotNull // An album can not exist without an artist
     @ManyToOne(fetch = FetchType.LAZY, optional = false) // more than one album may belong to one artist
     @JoinColumn(name = "artist_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
