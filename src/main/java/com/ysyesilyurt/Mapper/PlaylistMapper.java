@@ -9,12 +9,17 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Mapper(componentModel = "spring")
+@Component
 public interface PlaylistMapper {
+
+    List<Playlist> toPlaylistList(List<PlaylistEntityModel> playlistEntityModelList);
 
     Playlist toPlaylist(PlaylistEntityModel playlistEntityModel);
 

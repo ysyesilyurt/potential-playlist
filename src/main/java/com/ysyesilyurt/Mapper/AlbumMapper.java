@@ -7,9 +7,15 @@ import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Mapper(componentModel = "spring")
+@Component
 public interface AlbumMapper {
+
+    List<Album> toAlbumList(List<AlbumEntityModel> albumEntityModelList);
 
     @Mapping(source = "artist.fullName", target = "artistName")
     @Mapping(source = "artist.id", target = "artistId")

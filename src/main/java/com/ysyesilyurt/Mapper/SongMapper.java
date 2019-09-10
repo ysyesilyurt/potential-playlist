@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-@Component // TODO hmm
+@Component // TODO: check the component.
 public interface SongMapper {
 
     List<Song> toSongList(List<SongEntityModel> songEntityModelList);

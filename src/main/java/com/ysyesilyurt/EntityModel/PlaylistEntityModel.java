@@ -51,7 +51,7 @@ public class PlaylistEntityModel {
         return String.format("PlaylistEntityModel with id %d and title %s", id, title);
     }
 
-    @NotNull // A playlist can not exist without a song (namely, a playlist needs at least 1 song to exist)
+    // a playlist can exist without having any song
     @ManyToMany(cascade = { // a playlist can have more than one song and a song may appear in more than 1 playlist
             CascadeType.PERSIST,
             CascadeType.MERGE

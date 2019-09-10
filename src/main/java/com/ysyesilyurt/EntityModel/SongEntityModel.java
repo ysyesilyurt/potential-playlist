@@ -58,7 +58,7 @@ public class SongEntityModel {
     private AlbumEntityModel album;
 
     // Song may not belong to any playlist
-    @ManyToMany(mappedBy = "song") // a song may appear in more than one playlists
+    @ManyToMany(mappedBy = "songs") // a song may appear in more than one playlists /* Info: mappedBy maps field with a field that counters in other entity */
     @OrderBy("created_at DESC")
     private List<PlaylistEntityModel> playlists;
 }
