@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {AlbumMapper.class}) // to be able to map album model with its entity
 @Component
 public interface ArtistMapper {
 
@@ -19,7 +19,6 @@ public interface ArtistMapper {
 
     Artist toArtist(ArtistEntityModel artistEntityModel);
 
-    // TODO: List<AlbumEntityModel> => List<Album> ??
     @AfterMapping
     default void afterArtistMapping(ArtistEntityModel artistEntityModel,
                                    @MappingTarget Artist artist) {
@@ -32,6 +31,7 @@ public interface ArtistMapper {
         artist.setSongCount(songCount);
     }
 
+    List<ArtistEntityModel> toArtistEntityModelList(List<Artist> artistList);
+
     ArtistEntityModel toArtistEntityModel(Artist artist);
-    // TODO: List<Album> => List<AlbumEntityModel> ??
 }

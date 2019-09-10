@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {SongMapper.class}) // to be able to map song model with its entity
 @Component
 public interface PlaylistMapper {
 
@@ -36,6 +36,8 @@ public interface PlaylistMapper {
         playlist.setTotalLength(totalLength);
         playlist.setSongCount(songCount);
     }
+
+    List<PlaylistEntityModel> toPlaylistEntityModelList(List<Playlist> playlists);
 
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "lastModifiedAt", ignore = true)

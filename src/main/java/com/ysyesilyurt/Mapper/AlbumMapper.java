@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {SongMapper.class}) // to be able to map song model with its entity
 @Component
 public interface AlbumMapper {
 
@@ -34,6 +34,8 @@ public interface AlbumMapper {
         album.setTotalLength(totalLength);
         album.setSongCount(songCount);
     }
+
+    List<AlbumEntityModel> toAlbumEntityModelList(List<Album> albumList);
 
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "lastModifiedAt", ignore = true)

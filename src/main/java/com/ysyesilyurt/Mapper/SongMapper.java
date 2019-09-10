@@ -36,6 +36,8 @@ public interface SongMapper {
             song.setPlaylistIds(null);
     }
 
+    List<SongEntityModel> toSongEntityModelList(List<Song> songList);
+
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "lastModifiedAt", ignore = true)
     SongEntityModel toSongEntityModel(Song song);
