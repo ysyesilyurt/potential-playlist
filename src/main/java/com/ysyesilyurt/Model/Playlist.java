@@ -18,7 +18,7 @@ public class Playlist {
     private PlaylistCategory category;
     private float totalLength;
     private int songCount;
-    private List<Song> songs; // we keep songs as a list of songs in playlist
+    private List<Long> songIds; // we keep songs as a list of song ids in playlist DTO
 
-    // TODO: created_by?
+    // TODO: created_by user ?
 }

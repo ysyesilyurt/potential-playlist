@@ -19,5 +19,5 @@ public class Song {
     private String artistName;
     private Long albumId; // we only keep album's id in song
     private String albumName;
-    private List<Long> playlistIds; // we only keep playlists' id in song model as a list
+    private List<Long> playlistIds; // we keep playlists with their ids in song DTO
 }

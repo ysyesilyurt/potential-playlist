@@ -13,5 +13,5 @@ public class Artist {
     private String fullName;
     private int songCount;
     private int albumCount;
-    private List<Album> albums; // we keep albums as a list of albums in artist
+    private List<Long> albumIds; // we keep albums as a list of album ids in artist
 }

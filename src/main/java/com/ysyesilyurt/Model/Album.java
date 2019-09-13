@@ -18,5 +18,5 @@ public class Album {
     private int songCount;
     private String artistName;
     private Long artistId; // we only keep artist's id in album
-    private List<Song> songs; // we keep songs as a list of songs in album
+    private List<Long> songIds; // we keep songs as a list of song ids in album DTO
 }
