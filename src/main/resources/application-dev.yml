@@ -1,0 +1,21 @@
+server:
+    port: 8082
+spring:
+    application:
+        name: potential-playlist
+    jpa:
+        hibernate:
+            ddl-auto: update
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+                show_sql: true
+                format_sql: true
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/potential_playlist?useSSL=false
+        username: yavuz
+        password: p@ssw0rd
+    liquibase:
+        change-log: classpath:db/mysql/changelog/dbchangelog.xml
+        enabled: true
