@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+    <changeSet id="song-1.0.0" author="yavuz" failOnError="true">
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="song"/>
+            </not>
+        </preConditions>
+        <comment> Creating Song table without relations (Hibernate will handle the relations) </comment>
+        <createTable tableName="song" schemaName="potential_playlist">
+                <column name="id" type="bigint(20)">
+                    <constraints primaryKey="true"/>
+                </column>
+                <column name="created_at" type="bigint(20)">
+                </column>
+                <column name="last_modified_at" type="bigint(20)">
+                </column>
+                <column name="description" type="text">
+                </column>
+                <column name="length" type="float">
+                </column>
+                <column name="title" type="varchar(255)">
+                </column>
+            </createTable>
+
+    </changeSet>
+
+    <changeSet id="playlist-1.0.0" author="yavuz" failOnError="true">
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="playlist"/>
+            </not>
+        </preConditions>
+        <comment> Creating Playlist table without relations (Hibernate will handle the relations) </comment>
+        <createTable tableName="playlist" schemaName="potential_playlist">
+            <column name="id" type="bigint(20)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="created_at" type="bigint(20)">
+            </column>
+            <column name="last_modified_at" type="bigint(20)">
+            </column>
+            <column name="title" type="varchar(255)">
+            </column>
+            <column name="description" type="text">
+            </column>
+            <column name="category" type="varchar(255)">
+            </column>
+        </createTable>
+
+    </changeSet>
+
+    <changeSet id="album-1.0.0" author="yavuz" failOnError="true">
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="album"/>
+            </not>
+        </preConditions>
+        <comment> Creating Album table without relations (Hibernate will handle the relations) </comment>
+
+        <createTable tableName="album" schemaName="potential_playlist">
+                <column name="id" type="bigint(20)">
+                    <constraints primaryKey="true"/>
+                </column>
+                <column name="created_at" type="bigint(20)">
+                </column>
+                <column name="last_modified_at" type="bigint(20)">
+                </column>
+                <column name="title" type="varchar(255)">
+                </column>
+                <column name="description" type="text">
+                </column>
+            </createTable>
+
+    </changeSet>
+
+    <changeSet id="artist-1.0.0" author="yavuz" failOnError="true">
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="artist"/>
+            </not>
+        </preConditions>
+        <comment> Creating Artist table without relations (Hibernate will handle the relations) </comment>
+
+        <createTable tableName="artist" schemaName="potential_playlist">
+            <column name="id" type="bigint(20)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="created_at" type="varchar(255)">
+            </column>
+        </createTable>
+
+    </changeSet>
+
+</databaseChangeLog>
