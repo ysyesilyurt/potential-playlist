@@ -11,6 +11,7 @@ import org.mapstruct.MappingTarget;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,18 +24,27 @@ public interface PlaylistMapper {
 
     Playlist toPlaylist(PlaylistEntityModel playlistEntityModel);
 
-    // TODO: List<SongEntityModel> => List<Song> ??
     @AfterMapping
     default void afterPlaylistMapping(PlaylistEntityModel playlistEntityModel,
                                   @MappingTarget Playlist playlist) {
         float totalLength = 0;
         int songCount = 0;
-        for (SongEntityModel song: playlistEntityModel.getSongs()) {
-            totalLength += song.getLength();
-            songCount++;
+        if (playlistEntityModel.getSongs() != null) {
+            List<Long> songIds = new ArrayList<>();
+            for (SongEntityModel songEntityModel: playlistEntityModel.getSongs()) {
+                songIds.add(songEntityModel.getId());
+                totalLength += songEntityModel.getLength();
+                songCount++;
+            }
+            playlist.setSongIds(songIds);
+            playlist.setTotalLength(totalLength);
+            playlist.setSongCount(songCount);
         }
-        playlist.setTotalLength(totalLength);
-        playlist.setSongCount(songCount);
+        else {
+            playlist.setSongIds(null);
+            playlist.setTotalLength(0);
+            playlist.setSongCount(0);
+        }
     }
 
     List<PlaylistEntityModel> toPlaylistEntityModelList(List<Playlist> playlists);
@@ -43,5 +53,19 @@ public interface PlaylistMapper {
     @Mapping(target = "lastModifiedAt", ignore = true)
     PlaylistEntityModel toPlaylistEntityModel(Playlist playlist);
 
-    // TODO: List<Song> => List<SongEntityModel> ??
+    @AfterMapping
+    default void afterPlaylistEntityModelMapping(Playlist playlist,
+                                             @MappingTarget PlaylistEntityModel playlistEntityModel) {
+        if (playlist.getSongIds() != null) {
+            List<SongEntityModel> songEntityModelList = new ArrayList<>();
+            for (Long songId: playlist.getSongIds()) {
+                SongEntityModel songEntityModel = new SongEntityModel();
+                songEntityModel.setId(songId);
+                songEntityModelList.add(songEntityModel);
+            }
+            playlistEntityModel.setSongs(songEntityModelList);
+        }
+        else
+            playlistEntityModel.setSongs(null);
+    }
 }

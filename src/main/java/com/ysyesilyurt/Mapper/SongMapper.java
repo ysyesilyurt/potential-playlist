@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-@Component // TODO: check the component.
+@Component
 public interface SongMapper {
 
     List<Song> toSongList(List<SongEntityModel> songEntityModelList);
@@ -40,6 +40,7 @@ public interface SongMapper {
 
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "lastModifiedAt", ignore = true)
+    @Mapping(source = "albumId", target = "album.id")
     SongEntityModel toSongEntityModel(Song song);
 
     @AfterMapping
