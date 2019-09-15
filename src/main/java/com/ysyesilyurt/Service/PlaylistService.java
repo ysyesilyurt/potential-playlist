@@ -2,6 +2,7 @@ package com.ysyesilyurt.Service;
 
 import com.ysyesilyurt.EntityModel.PlaylistEntityModel;
 import com.ysyesilyurt.EntityModel.SongEntityModel;
+import com.ysyesilyurt.EntityModel.UserEntityModel;
 import com.ysyesilyurt.Enum.PlaylistCategory;
 import com.ysyesilyurt.Exception.ResourceNotFoundException;
 import com.ysyesilyurt.Mapper.PlaylistMapper;
@@ -10,7 +11,9 @@ import com.ysyesilyurt.Model.Playlist;
 import com.ysyesilyurt.Model.Song;
 import com.ysyesilyurt.Repository.PlaylistRepository;
 import com.ysyesilyurt.Repository.SongRepository;
+import com.ysyesilyurt.Repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -25,15 +28,18 @@ public class PlaylistService {
     private PlaylistMapper playlistMapper;
     private SongRepository songRepository;
     private SongMapper songMapper;
+    private UserRepository userRepository;
 
     public PlaylistService(PlaylistRepository playlistRepository,
                            PlaylistMapper playlistMapper,
                            SongRepository songRepository,
-                           SongMapper songMapper) {
+                           SongMapper songMapper,
+                           UserRepository userRepository) {
         this.playlistRepository = playlistRepository;
         this.playlistMapper = playlistMapper;
         this.songRepository = songRepository;
         this.songMapper = songMapper;
+        this.userRepository = userRepository;
     }
 
     public List<Playlist> getAllPlaylists() {
@@ -60,8 +66,16 @@ public class PlaylistService {
             throw new ResourceNotFoundException(String.format("Playlist not found with id : %d", playlistId));
     }
 
-    public Playlist createPlaylist(Playlist newPlaylist) {
+    public Playlist createPlaylist(Playlist newPlaylist, String username) {
 
+        Optional<UserEntityModel> userEntityModel = userRepository.findByUsername(username);
+        if (!userEntityModel.isPresent()) {
+            /* This if should never be entered since user is already authenticated! */
+            throw new UsernameNotFoundException(String.format("User not found by name: %s", username));
+        }
+
+        newPlaylist.setCreatedById(userEntityModel.get().getId());
+        newPlaylist.setCreatedByName(username);
         PlaylistEntityModel playlistEntityModel = this.persistPlaylist(newPlaylist);
         newPlaylist.setId(playlistEntityModel.getId());
         return newPlaylist;

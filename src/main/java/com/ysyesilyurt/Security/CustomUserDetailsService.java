@@ -22,11 +22,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        UserEntityModel user = userRepository.findByUsername(username);
-        if (user == null) {
+        Optional<UserEntityModel> user = userRepository.findByUsername(username);
+        if (!user.isPresent()) {
             throw new UsernameNotFoundException(String.format("User not found by name: %s", username));
         }
-        return toUserDetails(user);
+        return toUserDetails(user.get());
     }
 
     private UserDetails toUserDetails(UserEntityModel user) {

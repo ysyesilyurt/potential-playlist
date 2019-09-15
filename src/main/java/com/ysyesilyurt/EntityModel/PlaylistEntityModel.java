@@ -4,6 +4,8 @@ import com.ysyesilyurt.Enum.PlaylistCategory;
 import com.ysyesilyurt.EntityModel.SongEntityModel;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -69,4 +71,10 @@ public class PlaylistEntityModel {
      */
     @OrderBy("created_at DESC")
     private List<SongEntityModel> songs;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private UserEntityModel createdBy;
 }

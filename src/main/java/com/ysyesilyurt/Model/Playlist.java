@@ -19,6 +19,6 @@ public class Playlist {
     private float totalLength;
     private int songCount;
     private List<Long> songIds; // we keep songs as a list of song ids in playlist DTO
-
-    // TODO: created_by user ?
+    private Long createdById;
+    private String createdByName;
 }

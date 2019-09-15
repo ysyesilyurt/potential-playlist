@@ -22,6 +22,8 @@ public interface PlaylistMapper {
 
     List<Playlist> toPlaylistList(List<PlaylistEntityModel> playlistEntityModelList);
 
+    @Mapping(source = "createdBy.username", target = "createdByName")
+    @Mapping(source = "createdBy.id", target = "createdById")
     Playlist toPlaylist(PlaylistEntityModel playlistEntityModel);
 
     @AfterMapping
@@ -51,6 +53,7 @@ public interface PlaylistMapper {
 
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "lastModifiedAt", ignore = true)
+    @Mapping(source = "createdById", target = "createdBy.id")
     PlaylistEntityModel toPlaylistEntityModel(Playlist playlist);
 
     @AfterMapping
