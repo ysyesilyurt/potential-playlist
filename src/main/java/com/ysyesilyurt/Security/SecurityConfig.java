@@ -40,6 +40,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .userDetailsService(customUserDetailsService);
 //    }
 
+    @Autowired
+    private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
+    @Autowired
+    private CustomAccessDeniedHandler customAccessDeniedHandler;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
@@ -56,6 +62,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/playlists/**").hasAnyRole("USER", "ADMIN")
                 .and()
                 .httpBasic()
+                .and()
+                .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler)
+                .authenticationEntryPoint(customAuthenticationEntryPoint)
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
