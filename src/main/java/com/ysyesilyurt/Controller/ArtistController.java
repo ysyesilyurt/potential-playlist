@@ -11,10 +11,11 @@ import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/management/artists")
+@RequestMapping("/api/artists")
 @Slf4j
 public class ArtistController extends RestApiController {
 

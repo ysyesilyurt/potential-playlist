@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/management")
+@RequestMapping("/api")
 @Slf4j
 public class AlbumController extends RestApiController {
 

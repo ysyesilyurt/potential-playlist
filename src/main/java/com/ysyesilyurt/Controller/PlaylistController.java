@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/home/playlists")
+@RequestMapping("/api/playlists")
 @Slf4j
 public class PlaylistController extends RestApiController {
 
