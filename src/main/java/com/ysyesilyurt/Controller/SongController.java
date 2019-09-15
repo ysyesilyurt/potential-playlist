@@ -1,6 +1,7 @@
 package com.ysyesilyurt.Controller;
 
 import com.ysyesilyurt.Dto.SongUpdateDto;
+import com.ysyesilyurt.EntityModel.UserEntityModel;
 import com.ysyesilyurt.Model.Playlist;
 import com.ysyesilyurt.Model.Song;
 import com.ysyesilyurt.Rest.RestApiResponseBody;
@@ -11,13 +12,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping(value = "/api", headers = "Accept=application/json")
 @Slf4j
 public class SongController extends RestApiController {
 
@@ -31,13 +34,16 @@ public class SongController extends RestApiController {
     }
 
     @GetMapping("/songs")
-    public ResponseEntity<RestApiResponseBody<Resources<Song>>> getAllSongs() {
+    public ResponseEntity<RestApiResponseBody<Resources<Song>>> getAllSongs(
+            Authentication authentication) {
         List<Song> songList = songService.getAllSongs();
         return this.successCollection(songList);
     }
 
     @GetMapping("/songs/{songId}")
-    public ResponseEntity<RestApiResponseBody<Resource<Song>>> getSongById(@PathVariable Long songId) {
+    public ResponseEntity<RestApiResponseBody<Resource<Song>>> getSongById(
+            Authentication authentication,
+            @PathVariable Long songId) {
         Song song = songService.getSongById(songId);
         return this.success(song);
     }
@@ -52,8 +58,10 @@ public class SongController extends RestApiController {
      * @return ResponseEntity<RestApiResponseBody<Resource<Song>>>
      */
     @PostMapping(value = {"/songs", "/albums/{albumId}/songs"})
-    public ResponseEntity<RestApiResponseBody<Resource<Song>>> createSong(@RequestBody Song newSong,
-                                                                          @PathVariable Optional<Long> albumId) {
+    public ResponseEntity<RestApiResponseBody<Resource<Song>>> createSong(
+            Authentication authentication,
+            @RequestBody Song newSong,
+            @PathVariable Optional<Long> albumId) {
         songService.createSong(newSong, albumId);
         return this.success(newSong);
     }
@@ -71,6 +79,7 @@ public class SongController extends RestApiController {
      */
     @PutMapping("/songs/{songId}")
     public ResponseEntity<RestApiResponseBody<?>> updateSongById(
+            Authentication authentication,
             @PathVariable Long songId,
             @RequestBody SongUpdateDto requestBody) {
         songService.updateSongById(songId, requestBody.getAlbumId(), requestBody.getNewTitle(),
@@ -80,6 +89,7 @@ public class SongController extends RestApiController {
 
     @DeleteMapping("/songs/{songId}")
     public ResponseEntity<RestApiResponseBody<?>> deleteSongById(
+            Authentication authentication,
             @PathVariable Long songId) {
         songService.deleteSongById(songId);
         return this.success();
@@ -93,6 +103,7 @@ public class SongController extends RestApiController {
      */
     @GetMapping("/songs/{songId}/playlists")
     public ResponseEntity<RestApiResponseBody<Resources<Playlist>>> getAllPlaylistsThatSongBelongs(
+            Authentication authentication,
             @PathVariable Long songId) {
         List<Playlist> playlists = songService.getAllPlaylistsThatSongBelongs(songId);
         return this.successCollection(playlists);
@@ -107,6 +118,7 @@ public class SongController extends RestApiController {
      */
     @PutMapping("/songs/{songId}/playlists/{playlistId}")
     public ResponseEntity<RestApiResponseBody<?>> addSongToPlaylist(
+            Authentication authentication,
             @PathVariable Long playlistId,
             @PathVariable Long songId) {
         playlistService.addSongToPlaylist(playlistId, songId); /* PlaylistService is utilized */
@@ -122,6 +134,7 @@ public class SongController extends RestApiController {
      */
     @DeleteMapping("/songs/{songId}/playlists/{playlistId}")
     public ResponseEntity<RestApiResponseBody<?>> deleteSongFromPlaylist(
+            Authentication authentication,
             @PathVariable Long playlistId,
             @PathVariable Long songId) {
         playlistService.deleteSongFromPlaylist(playlistId, songId); /* PlaylistService is utilized */
